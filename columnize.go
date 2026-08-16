@@ -45,7 +45,13 @@ func Columnize(lines []string, sep string, gap int) string {
 			if i < len(widths) {
 				w = widths[i]
 			}
-			cells = append(cells, padTo(c, w))
+			// 最后一列不补尾空格，否则整行末尾会多出无意义的空白，
+			// 既难看也影响和期望字符串比对。
+			if i == len(r)-1 {
+				cells = append(cells, c)
+			} else {
+				cells = append(cells, padTo(c, w))
+			}
 		}
 		out = append(out, strings.Join(cells, pad))
 	}
